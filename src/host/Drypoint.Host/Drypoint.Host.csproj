@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\core\Drypoint.Core\Drypoint.Core.csproj" />
     <ProjectReference Include="..\..\unity\Drypoint.Extensions\Drypoint.Extensions.csproj" />
+    <ProjectReference Include="..\..\unity\Drypoint.Unity\Drypoint.Unity.csproj" />
     <ProjectReference Include="..\Drypoint.Host.Core\Drypoint.Host.Core.csproj" />
   </ItemGroup>
 

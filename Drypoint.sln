@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Extensions", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Exception", "src\unity\Drypoint.Exception\Drypoint.Exception.csproj", "{018F1122-4A98-4EEA-BBFF-494D0287D88A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drypoint.Unity", "Drypoint.Unity\Drypoint.Unity.csproj", "{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drypoint.Unity", "src\unity\Drypoint.Unity\Drypoint.Unity.csproj", "{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

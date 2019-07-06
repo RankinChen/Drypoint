@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\unity\Drypoint.Extensions\Drypoint.Extensions.csproj" />
+    <ProjectReference Include="..\Drypoint.Extensions\Drypoint.Extensions.csproj" />
   </ItemGroup>
 
 </Project>
