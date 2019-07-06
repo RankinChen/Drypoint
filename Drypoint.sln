@@ -17,23 +17,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Job", "6.Job", "{6DCB16AC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.Documents", "0.Documents", "{C59499B0-06BB-4E18-85FF-AAC1BDCE30EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Host", "Drypoint.Host\Drypoint.Host.csproj", "{0AE18B23-6149-4A84-8AB6-27103C7DCC43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Host", "src\host\Drypoint.Host\Drypoint.Host.csproj", "{0AE18B23-6149-4A84-8AB6-27103C7DCC43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Host.Core", "Drypoint.Host.Core\Drypoint.Host.Core.csproj", "{FB922850-B257-429E-9C1E-57E17D08C0EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Host.Core", "src\host\Drypoint.Host.Core\Drypoint.Host.Core.csproj", "{FB922850-B257-429E-9C1E-57E17D08C0EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Application", "Drypoint.Application\Drypoint.Application.csproj", "{DA48296A-BD42-417F-9E26-2764F40B9F58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Application", "src\application\Drypoint.Application\Drypoint.Application.csproj", "{DA48296A-BD42-417F-9E26-2764F40B9F58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Application.Custom", "Drypoint.Application.Custom\Drypoint.Application.Custom.csproj", "{4168AEB0-65AB-4F07-A8CB-B14A2D74E8E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Application.Custom", "src\application\Drypoint.Application.Custom\Drypoint.Application.Custom.csproj", "{4168AEB0-65AB-4F07-A8CB-B14A2D74E8E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Core", "Drypoint.Core\Drypoint.Core.csproj", "{5602E667-5195-4ED5-8D57-DE3385152C98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Core", "src\core\Drypoint.Core\Drypoint.Core.csproj", "{5602E667-5195-4ED5-8D57-DE3385152C98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Core.Custom", "Drypoint.Core.Custom\Drypoint.Core.Custom.csproj", "{45D35EA8-0BA2-47AD-A638-54FE0887EED5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Core.Custom", "src\core\Drypoint.Core.Custom\Drypoint.Core.Custom.csproj", "{45D35EA8-0BA2-47AD-A638-54FE0887EED5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.EntityFrameworkCore", "Drypoint.EntityFrameworkCore\Drypoint.EntityFrameworkCore.csproj", "{5D63C507-5F29-484E-9250-7D3E84B79126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.EntityFrameworkCore", "src\data\Drypoint.EntityFrameworkCore\Drypoint.EntityFrameworkCore.csproj", "{5D63C507-5F29-484E-9250-7D3E84B79126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drypoint.Extensions", "Drypoint.Extensions\Drypoint.Extensions.csproj", "{C61BC2DF-3F0D-4A29-95D3-AED7A6CC41E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Extensions", "src\unity\Drypoint.Extensions\Drypoint.Extensions.csproj", "{C61BC2DF-3F0D-4A29-95D3-AED7A6CC41E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drypoint.Exception", "Drypoint.Exception\Drypoint.Exception.csproj", "{018F1122-4A98-4EEA-BBFF-494D0287D88A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Exception", "src\unity\Drypoint.Exception\Drypoint.Exception.csproj", "{018F1122-4A98-4EEA-BBFF-494D0287D88A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drypoint.Unity", "Drypoint.Unity\Drypoint.Unity.csproj", "{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{018F1122-4A98-4EEA-BBFF-494D0287D88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{018F1122-4A98-4EEA-BBFF-494D0287D88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{018F1122-4A98-4EEA-BBFF-494D0287D88A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{5D63C507-5F29-484E-9250-7D3E84B79126} = {358FCA6B-2D81-4473-891E-7E18AB8036CE}
 		{C61BC2DF-3F0D-4A29-95D3-AED7A6CC41E1} = {60A6612E-60C3-4637-A1C6-63D7AA0C4C6F}
 		{018F1122-4A98-4EEA-BBFF-494D0287D88A} = {60A6612E-60C3-4637-A1C6-63D7AA0C4C6F}
+		{B4D0406C-D595-45A5-BB89-4010A8F1DE1F} = {60A6612E-60C3-4637-A1C6-63D7AA0C4C6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C19DD71E-2F9D-4C83-8C80-00A74BF466D8}
