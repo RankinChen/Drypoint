@@ -31,7 +31,7 @@ namespace Drypoint.Host.Startup
                 {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     //添加控制台日志,Docker环境下请务必启用
-                    logging.AddConsole();
+                    //logging.AddConsole();
                     //添加调试日志
                     logging.AddDebug();
                 })

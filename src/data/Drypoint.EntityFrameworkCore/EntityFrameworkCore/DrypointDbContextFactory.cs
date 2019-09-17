@@ -11,8 +11,9 @@ namespace Drypoint.EntityFrameworkCore.EntityFrameworkCore
         public DrypointDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<DrypointDbContext>();
-            var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder(), addUserSecrets: true);
 
+            var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder(), addUserSecrets: true);
+            
             DrypointDbContextConfigurer.Configure(builder, configuration.GetConnectionString(DrypointConsts.ConnectionStringName));
 
             return new DrypointDbContext(builder.Options);

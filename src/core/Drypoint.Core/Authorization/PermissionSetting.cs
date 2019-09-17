@@ -5,7 +5,7 @@ using Drypoint.Core.Common.Auditing;
 namespace Drypoint.Core.Authorization
 {
     [Table("DrypointPermissions")]
-    public abstract class PermissionSetting : CreationAuditedEntity<long>
+    public class PermissionSetting : CreationAuditedEntity<long>
     {
 
         [Required]

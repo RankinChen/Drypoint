@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Configuration;
-using Drypoint.Extensions;
+using Drypoint.Unity;
+using Drypoint.Unity.Extensions;
 
 namespace Drypoint.Unity.Configuration
 {
@@ -37,6 +38,8 @@ namespace Drypoint.Unity.Configuration
             if (addUserSecrets)
             {
                 builder.AddUserSecrets(typeof(AppConfigurations).GetAssembly());
+                //重要字符串存放到secrets.json文件中
+                builder = builder.AddJsonFile("secrets.json");
             }
 
             return builder.Build();

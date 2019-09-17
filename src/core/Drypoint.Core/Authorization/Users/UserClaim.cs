@@ -24,7 +24,7 @@ namespace Drypoint.Core.Authorization.Users
 
         }
 
-        public UserClaim(UserBase user, Claim claim)
+        public UserClaim(User user, Claim claim)
         {
             UserId = user.Id;
             ClaimType = claim.Type;

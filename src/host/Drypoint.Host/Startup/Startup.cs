@@ -12,13 +12,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Drypoint.Host.Core.Configuration;
-using Drypoint.Extensions;
+using Drypoint.Unity;
 using Microsoft.AspNetCore.Http;
-using Drypoint.Host.Core.Identity;
+using NLog.Extensions.Logging;
+using Drypoint.Host.Core.IdentityServer;
+using Newtonsoft.Json;
+using IdentityServer4.AccessTokenValidation;
+using CSRedis;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Redis;
+using Microsoft.IdentityModel.Logging;
+using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
+using Drypoint.Unity.Extensions;
+using Drypoint.Application.Authorization;
+using Drypoint.Host.Core.Authorization;
+using IdentityModel;
 
 namespace Drypoint.Host.Startup
 {
-    public partial class Startup
+    public class Startup
     {
         private readonly ILogger _logger;
         private const string LocalCorsPolicyName = "localhost";
@@ -34,31 +47,45 @@ namespace Drypoint.Host.Startup
             _logger.LogInformation($"运行环境:{env.EnvironmentName}");
         }
 
-        /// <summary>
-        /// 配置自定义服务
-        /// </summary>
-        /// <param name="services"></param>
-        partial void ConfigureCustomServices(IServiceCollection services);
-
-        partial void CustomConfigure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory);
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //DI
+            services.AddServiceRegister();
+
+            //初始化缓存 参考 https://github.com/2881099/csredis
+            CSRedisClient csredis = new CSRedisClient(_appConfiguration["RedisConnectionString"]);
+            services.AddSingleton(csredis);
+            services.AddSingleton<IDistributedCache>(new CSRedisCache(csredis));
+
+            //AutoMapper 
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<AutoMapperConfig>();
+            }, AppDomain.CurrentDomain.GetAssemblies());
+
             //MVC
             services.AddMvc(options =>
             {
                 options.Filters.Add(new CorsAuthorizationFilterFactory(LocalCorsPolicyName));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddAuthentication().AddJwtBearer() ;
+                options.Filters.Add(typeof(AsyncAuthorizationFilter));  //添加权限过滤器
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddJsonOptions(options =>
+            {
+                //忽略循环引用
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //不使用驼峰样式的key,按照Model中的属性名进行命名
+                options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+            });
 
             var sbuilder = services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
-            if (!_appConfiguration["SignalRRedisCache:ConnectionString"].IsNullOrWhiteSpace())
+            if (!_appConfiguration["RedisConnectionString"].IsNullOrWhiteSpace())
             {
-                _logger.LogWarning("SignalRRedisCache:ConnectionString:" + _appConfiguration["SignalRRedisCache:ConnectionString"]);
-                sbuilder.AddRedis(_appConfiguration["SignalRRedisCache:ConnectionString"]);
+                _logger.LogWarning("RedisConnectionString:" + _appConfiguration["RedisConnectionString"]);
+                sbuilder.AddRedis(_appConfiguration["RedisConnectionString"]);
             }
 
             //Configure CORS for APP
@@ -66,23 +93,21 @@ namespace Drypoint.Host.Startup
             {
                 options.AddPolicy(LocalCorsPolicyName, builder =>
                 {
-                    //App:CorsOrigins in appsettings.json can contain more than one address with splitted by comma.
                     builder
-                        .WithOrigins(
-                            // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
-                            _appConfiguration["CorsOrigins"]
-                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                                .Select(o => o.RemovePostFix("/"))
-                                .ToArray()
-                        )
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        //.WithOrigins(
+                        //    // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
+                        //    _appConfiguration["App:CorsOrigins"]
+                        //        .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                        //        .Select(o => o.RemovePostFix("/"))
+                        //        .ToArray()
+                        //)
+                        //.SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
                 });
             });
-            IdentityRegistrar.Register(services);
-            //AuthConfigurer.Configure(services, _appConfiguration);
 
             if (bool.Parse(_appConfiguration["App:HttpsRedirection"] ?? "false"))
             {
@@ -98,25 +123,38 @@ namespace Drypoint.Host.Startup
             //是否启用HTTP严格传输安全协议(HSTS)
             if (bool.Parse(_appConfiguration["App:UseHsts"] ?? "false"))
             {
-                //services.AddHsts(options =>
-                //{
-                //    options.Preload = true;
-                //    options.IncludeSubDomains = true;
-                //    options.MaxAge = TimeSpan.FromDays(60);
-                //    options.ExcludedHosts.Add("example.com");
-                //});
+                services.AddHsts(options =>
+                {
+                    options.Preload = true;
+                    options.IncludeSubDomains = true;
+                    options.MaxAge = TimeSpan.FromDays(60);
+                    options.ExcludedHosts.Add("example.com");
+                });
             }
 
-            try
+            //授权相关:资源端代码
+            IdentityModelEventSource.ShowPII = true;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            //资源端
+            .AddIdentityServerAuthentication(options =>
             {
-                _logger.LogWarning("ConfigureCustomServices  Begin...");
-                ConfigureCustomServices(services);
-                _logger.LogWarning("ConfigureCustomServices  End...");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("执行ConfigureCustomServices出现错误", ex);
-            }
+                //options.JwtValidationClockSkew = TimeSpan.Zero;
+                options.Authority = _appConfiguration["IdentityServer:Authority"];
+                options.ApiName = _appConfiguration["IdentityServer:ApiName"];
+                options.ApiSecret = _appConfiguration["IdentityServer:ApiSecret"];
+                options.RequireHttpsMetadata = false;
+                options.JwtValidationClockSkew = TimeSpan.FromSeconds(0);  //验证token间隔时间
+                //待测试
+                //options.JwtBearerEvents = new JwtBearerEvents
+                //{
+                //    OnMessageReceived = QueryStringTokenResolver
+                //};
+            });
+
+            //添加自定义API文档生成(支持文档配置)
+            services.AddCustomSwaggerGen(_appConfiguration, _hostingEnvironment);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -129,54 +167,50 @@ namespace Drypoint.Host.Startup
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                if (bool.Parse(_appConfiguration["App:UseHsts"] ?? "false"))
+                {
+                    app.UseHsts();
+                }
             }
-            app.UseCors(LocalCorsPolicyName); //Enable CORS!
 
-            app.UseAuthentication();
-            if (bool.Parse(_appConfiguration["IdentityServer:IsEnabled"]))
+
+            if (_appConfiguration["Logging:LogType"].ToLower() == "nlog")
             {
-                app.UseIdentityServer();
+                loggerFactory.AddNLog();
             }
-            
+
+            app.UseCors(LocalCorsPolicyName); //Enable CORS!
+            if (bool.Parse(_appConfiguration["App:HttpsRedirection"] ?? "false"))
+            {
+                _logger.LogWarning("准备启用HTTS跳转...");
+                //建议开启，以在浏览器显示安全图标
+                app.UseHttpsRedirection();
+            }
+
             app.UseStaticFiles();
-            //using (var scope = app.ApplicationServices.CreateScope())
-            //{
-            //    if (scope.ServiceProvider.GetService<DatabaseCheckHelper>().Exist(_appConfiguration["ConnectionStrings:Default"]))
-            //    {
-            //        app.UseAbpRequestLocalization();
-            //    }
-            //}
 
             app.UseSignalR(routes =>
             {
                 //routes.MapHub<ChatHub>("/signalr-chat");
             });
 
-            //是否启用HTTP严格传输安全协议(HSTS)【开发环境关闭】
-            if (!env.IsDevelopment() && bool.Parse(_appConfiguration["App:UseHsts"] ?? "false"))
-            {
-                _logger.LogWarning("准备启用HSTS...");
-                try
-                {
-                    app.UseHsts();
-                    _logger.LogWarning("成功启用HSTS...");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("启用HSTS出现错误", ex);
-                }
-            }
+            //授权相关:资源端代码
+            app.UseAuthentication();
 
-            try
+            //启用中间件为生成的 Swagger 规范和 Swagger UI 提供服务
+            app.UseCustomSwaggerUI(_appConfiguration);
+
+            app.UseMvc(routes =>
             {
-                _logger.LogWarning("应用自定义配置...");
-                CustomConfigure(app, env, loggerFactory);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("应用自定义配置出现错误", ex);
-            }
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "defaultWithArea",
+                    template: "{area}/{controller=Home}/{action=Index}/{id?}");
+            });
+
         }
     }
 }

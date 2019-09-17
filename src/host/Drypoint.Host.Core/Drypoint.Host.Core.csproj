@@ -5,17 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4" Version="2.4.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="IdentityServer4" Version="2.5.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\application\Drypoint.Application\Drypoint.Application.csproj" />
     <ProjectReference Include="..\..\core\Drypoint.Core\Drypoint.Core.csproj" />
     <ProjectReference Include="..\..\data\Drypoint.EntityFrameworkCore\Drypoint.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\unity\Drypoint.Exception\Drypoint.Exception.csproj" />
-    <ProjectReference Include="..\..\unity\Drypoint.Extensions\Drypoint.Extensions.csproj" />
     <ProjectReference Include="..\..\unity\Drypoint.Unity\Drypoint.Unity.csproj" />
   </ItemGroup>
 

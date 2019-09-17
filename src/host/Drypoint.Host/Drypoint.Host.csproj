@@ -8,25 +8,44 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
+    <PackageReference Include="Caching.CSRedis" Version="3.0.51" />
+    <PackageReference Include="CSRedisCore" Version="3.1.2" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.11" />
+    <PackageReference Include="NLog" Version="4.6.6" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.5.2" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Drypoint.Core\Drypoint.Core.csproj" />
-    <ProjectReference Include="..\..\unity\Drypoint.Extensions\Drypoint.Extensions.csproj" />
+    <ProjectReference Include="..\..\application\Drypoint.Application.Custom\Drypoint.Application.Custom.csproj" />
+    <ProjectReference Include="..\..\application\Drypoint.Application\Drypoint.Application.csproj" />
     <ProjectReference Include="..\..\unity\Drypoint.Unity\Drypoint.Unity.csproj" />
     <ProjectReference Include="..\Drypoint.Host.Core\Drypoint.Host.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" appsettings_1Development_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

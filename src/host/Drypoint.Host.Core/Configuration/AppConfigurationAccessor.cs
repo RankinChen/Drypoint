@@ -1,6 +1,7 @@
 ﻿using Drypoint.Host.Core.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
+using Drypoint.Unity.Dependency;
 
 namespace Drypoint.Host.Core.Configuration
 {

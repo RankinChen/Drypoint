@@ -1,4 +1,5 @@
-﻿using Drypoint.Extensions;
+﻿using Drypoint.Unity;
+using Drypoint.Unity.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,8 +32,7 @@ namespace Drypoint.Unity
 
                 directoryInfo = directoryInfo.Parent;
             }
-
-            var webHostFolder = Path.Combine(directoryInfo.FullName, "Drypoint.Host");
+            var webHostFolder = Path.Combine(directoryInfo.FullName, "src\\host\\Drypoint.Host");
             if (Directory.Exists(webHostFolder))
             {
                 return webHostFolder;
