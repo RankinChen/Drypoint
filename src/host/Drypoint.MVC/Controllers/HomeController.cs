@@ -16,6 +16,12 @@ namespace Drypoint.MVC.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHttpClientFactory _clientFactory;
+        public HomeController(IHttpClientFactory clientFactory)
+        {
+            _clientFactory = clientFactory;
+        }
+
         public IActionResult Index()
         {
             var user = User.Identity;
@@ -25,7 +31,8 @@ namespace Drypoint.MVC.Controllers
         [Authorize]
         public async Task<IActionResult> TestAPI()
         {
-            var client = new HttpClient();
+            var client = _clientFactory.CreateClient();
+
             var disco = await client.GetDiscoveryDocumentAsync("https://localhost:44333");
             if (disco.IsError)
             {

@@ -14,7 +14,7 @@ namespace Drypoint.EntityFrameworkCore.EntityFrameworkCore
 
             var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder(), addUserSecrets: true);
             
-            DrypointDbContextConfigurer.Configure(builder, configuration.GetConnectionString(DrypointConsts.ConnectionStringName));
+            DrypointDbContextConfigurer.Configure(builder, configuration.GetConnectionString(DrypointConsts.ConnectionStringName_PostgreSQL),DBCategory.PostgreSQL);
 
             return new DrypointDbContext(builder.Options);
         }

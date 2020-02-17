@@ -12,6 +12,11 @@ namespace Drypoint.Unity
         public const string ConnectionStringName = "Default";
 
         /// <summary>
+        /// 数据库连接字符串（PostgreSQL）
+        /// </summary>
+        public const string ConnectionStringName_PostgreSQL = "PostgreSQL";
+        
+        /// <summary>
         /// 接口前缀
         /// </summary>
         public const string ApiPrefix = "api/";
@@ -36,5 +41,21 @@ namespace Drypoint.Unity
         public const string CacheKey_TokenValidityKey = "token_validity_key";
 
         public static string CacheKey_UserIdentifier = "user_identifier";
+    }
+
+    /// <summary>
+    /// 数据库种类
+    /// </summary>
+    public enum DBCategory { 
+
+        /// <summary>
+        /// MS SQL Server
+        /// </summary>
+        SQLServer=0,
+
+        /// <summary>
+        /// PostgreSQL
+        /// </summary>
+        PostgreSQL = 1,
     }
 }

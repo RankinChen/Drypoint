@@ -72,7 +72,7 @@ namespace Drypoint.Host.Core.IdentityServer
                     ClientUri = child["ClientUri"] ?? "",
                     AllowedGrantTypes = child.GetSection("AllowedGrantTypes").GetChildren().Select(c => c.Value).ToArray(),
                     AllowedCorsOrigins = child.GetSection("AllowedCorsOrigins").GetChildren().Select(c => c.Value)?.ToArray(),
-                    AccessTokenType = AccessTokenType.Reference,
+                    AccessTokenType = AccessTokenType.Reference, //默认值为 JWT   Reference方式需要API提供身份认证
                     ClientSecrets = child.GetSection("ClientSecrets").GetChildren().Select(secret => new Secret(secret["Value"].Sha256())).ToArray(),
                     AllowedScopes = child.GetSection("AllowedScopes").GetChildren().Select(c => c.Value).ToArray(),
                     RedirectUris = child.GetSection("RedirectUris").GetChildren().Select(c => c.Value).ToArray(),

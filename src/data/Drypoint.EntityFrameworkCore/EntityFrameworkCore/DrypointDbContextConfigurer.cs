@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Drypoint.Unity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -8,30 +9,48 @@ namespace Drypoint.EntityFrameworkCore.EntityFrameworkCore
 {
     public static class DrypointDbContextConfigurer
     {
-        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, string connectionString,
+        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, string connectionString, DBCategory dbCategory=DBCategory.SQLServer,
             bool isUseRowNumber = true)
         {
-            if (isUseRowNumber)
+            switch (dbCategory)
             {
-                builder.UseSqlServer(connectionString, p => p.UseRowNumberForPaging());
+                case DBCategory.SQLServer:
+                    if (isUseRowNumber)
+                    {
+                        builder.UseSqlServer(connectionString, p => p.UseRowNumberForPaging());
+                    }
+                    else
+                    {
+                        builder.UseSqlServer(connectionString);
+                    }
+                    break;
+                case DBCategory.PostgreSQL:
+                        builder.UseNpgsql(connectionString);
+                    break;
             }
-            else
-            {
-                builder.UseSqlServer(connectionString);
-            }
+
         }
 
-        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, DbConnection connection,
+        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, DbConnection connection, DBCategory dbCategory,
             bool isUseRowNumber = true)
         {
-            if (isUseRowNumber)
+            switch (dbCategory)
             {
-                builder.UseSqlServer(connection, p => p.UseRowNumberForPaging());
+                case DBCategory.SQLServer:
+                    if (isUseRowNumber)
+                    {
+                        builder.UseSqlServer(connection, p => p.UseRowNumberForPaging());
+                    }
+                    else
+                    {
+                        builder.UseSqlServer(connection);
+                    }
+                    break;
+                case DBCategory.PostgreSQL:
+                    builder.UseNpgsql(connection);
+                    break;
             }
-            else
-            {
-                builder.UseSqlServer(connection);
-            }
+            
         }
     }
 }

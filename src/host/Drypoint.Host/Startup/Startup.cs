@@ -28,6 +28,7 @@ using Drypoint.Unity.Extensions;
 using Drypoint.Application.Authorization;
 using Drypoint.Host.Core.Authorization;
 using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Drypoint.Host.Startup
 {
@@ -135,6 +136,15 @@ namespace Drypoint.Host.Startup
             //授权相关:资源端代码
             IdentityModelEventSource.ShowPII = true;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //客户端设置 AccessTokenType为JWT(默认)写法
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //        .AddJwtBearer(options =>
+            //         {
+            //             options.Authority = _appConfiguration["IdentityServer:Authority"];
+            //             options.RequireHttpsMetadata = false;
+            //             options.Audience = _appConfiguration["IdentityServer:ApiName"];
+            //         });
+            //客户端设置 AccessTokenType为Reference时需要API提供认证身份认证
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             //资源端
             .AddIdentityServerAuthentication(options =>

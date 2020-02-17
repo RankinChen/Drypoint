@@ -42,14 +42,6 @@ namespace Drypoint.SSO
             _logger.LogInformation($"运行环境:{env.EnvironmentName}");
         }
 
-        /// <summary>
-        /// 配置自定义服务
-        /// </summary>
-        /// <param name="services"></param>
-        partial void ConfigureCustomServices(IServiceCollection services);
-
-        partial void CustomConfigure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory);
-
         public void ConfigureServices(IServiceCollection services)
         {
             //DI
