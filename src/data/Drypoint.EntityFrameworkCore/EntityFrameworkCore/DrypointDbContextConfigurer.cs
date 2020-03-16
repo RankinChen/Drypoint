@@ -9,48 +9,32 @@ namespace Drypoint.EntityFrameworkCore.EntityFrameworkCore
 {
     public static class DrypointDbContextConfigurer
     {
-        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, string connectionString, DBCategory dbCategory=DBCategory.SQLServer,
-            bool isUseRowNumber = true)
+        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, string connectionString, DBCategory dbCategory = DBCategory.SQLServer)
         {
             switch (dbCategory)
             {
                 case DBCategory.SQLServer:
-                    if (isUseRowNumber)
-                    {
-                        builder.UseSqlServer(connectionString, p => p.UseRowNumberForPaging());
-                    }
-                    else
-                    {
-                        builder.UseSqlServer(connectionString);
-                    }
+                    builder.UseSqlServer(connectionString);
                     break;
                 case DBCategory.PostgreSQL:
-                        builder.UseNpgsql(connectionString);
+                    builder.UseNpgsql(connectionString);
                     break;
             }
 
         }
 
-        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, DbConnection connection, DBCategory dbCategory,
-            bool isUseRowNumber = true)
+        public static void Configure(DbContextOptionsBuilder<DrypointDbContext> builder, DbConnection connection, DBCategory dbCategory)
         {
             switch (dbCategory)
             {
                 case DBCategory.SQLServer:
-                    if (isUseRowNumber)
-                    {
-                        builder.UseSqlServer(connection, p => p.UseRowNumberForPaging());
-                    }
-                    else
-                    {
-                        builder.UseSqlServer(connection);
-                    }
+                    builder.UseSqlServer(connection);
                     break;
                 case DBCategory.PostgreSQL:
                     builder.UseNpgsql(connection);
                     break;
             }
-            
+
         }
     }
 }

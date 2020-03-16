@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.705
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Web", "1.Web", "{1CA47F79-16A5-4909-B6E8-1AEFED909F8A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Application", "2.Application", "{32486F92-307D-4031-9EEC-D1A56746E570}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Core", "3.Core", "{A99861A1-B4AA-41DE-8E40-2FD60CD3407E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Model", "3.Model", "{A99861A1-B4AA-41DE-8E40-2FD60CD3407E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Data", "4.Data", "{358FCA6B-2D81-4473-891E-7E18AB8036CE}"
 EndProject
@@ -17,17 +17,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Job", "6.Job", "{6DCB16AC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.Documents", "0.Documents", "{C59499B0-06BB-4E18-85FF-AAC1BDCE30EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Host", "src\host\Drypoint.Host\Drypoint.Host.csproj", "{0AE18B23-6149-4A84-8AB6-27103C7DCC43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint", "src\web\Drypoint\Drypoint.csproj", "{0AE18B23-6149-4A84-8AB6-27103C7DCC43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Host.Core", "src\host\Drypoint.Host.Core\Drypoint.Host.Core.csproj", "{FB922850-B257-429E-9C1E-57E17D08C0EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Core", "src\web\Drypoint.Core\Drypoint.Core.csproj", "{FB922850-B257-429E-9C1E-57E17D08C0EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Application", "src\application\Drypoint.Application\Drypoint.Application.csproj", "{DA48296A-BD42-417F-9E26-2764F40B9F58}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Application.Custom", "src\application\Drypoint.Application.Custom\Drypoint.Application.Custom.csproj", "{4168AEB0-65AB-4F07-A8CB-B14A2D74E8E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Core", "src\core\Drypoint.Core\Drypoint.Core.csproj", "{5602E667-5195-4ED5-8D57-DE3385152C98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Model", "src\model\Drypoint.Model\Drypoint.Model.csproj", "{5602E667-5195-4ED5-8D57-DE3385152C98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Core.Custom", "src\core\Drypoint.Core.Custom\Drypoint.Core.Custom.csproj", "{45D35EA8-0BA2-47AD-A638-54FE0887EED5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Model.Custom", "src\model\Drypoint.Model.Custom\Drypoint.Model.Custom.csproj", "{45D35EA8-0BA2-47AD-A638-54FE0887EED5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.EntityFrameworkCore", "src\data\Drypoint.EntityFrameworkCore\Drypoint.EntityFrameworkCore.csproj", "{5D63C507-5F29-484E-9250-7D3E84B79126}"
 EndProject
@@ -35,9 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Exception", "src\u
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.Unity", "src\unity\Drypoint.Unity\Drypoint.Unity.csproj", "{B4D0406C-D595-45A5-BB89-4010A8F1DE1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.SSO", "src\host\Drypoint.SSO\Drypoint.SSO.csproj", "{BBD5C364-FD77-4571-A090-413F4361BFDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.SSO", "src\web\Drypoint.SSO\Drypoint.SSO.csproj", "{BBD5C364-FD77-4571-A090-413F4361BFDD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.MVC(仅用于调试IDS4可删除)", "src\host\Drypoint.MVC\Drypoint.MVC(仅用于调试IDS4可删除).csproj", "{322E73BB-C0AA-4082-94B9-0452B5F8DA7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drypoint.MVC(仅用于调试IDS4可删除)", "src\web\Drypoint.MVC\Drypoint.MVC(仅用于调试IDS4可删除).csproj", "{34D5DADA-573C-4017-B88A-59BB328D47D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,10 +85,10 @@ Global
 		{BBD5C364-FD77-4571-A090-413F4361BFDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBD5C364-FD77-4571-A090-413F4361BFDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBD5C364-FD77-4571-A090-413F4361BFDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{322E73BB-C0AA-4082-94B9-0452B5F8DA7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{322E73BB-C0AA-4082-94B9-0452B5F8DA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{322E73BB-C0AA-4082-94B9-0452B5F8DA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{322E73BB-C0AA-4082-94B9-0452B5F8DA7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34D5DADA-573C-4017-B88A-59BB328D47D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34D5DADA-573C-4017-B88A-59BB328D47D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34D5DADA-573C-4017-B88A-59BB328D47D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34D5DADA-573C-4017-B88A-59BB328D47D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,7 +104,7 @@ Global
 		{018F1122-4A98-4EEA-BBFF-494D0287D88A} = {60A6612E-60C3-4637-A1C6-63D7AA0C4C6F}
 		{B4D0406C-D595-45A5-BB89-4010A8F1DE1F} = {60A6612E-60C3-4637-A1C6-63D7AA0C4C6F}
 		{BBD5C364-FD77-4571-A090-413F4361BFDD} = {1CA47F79-16A5-4909-B6E8-1AEFED909F8A}
-		{322E73BB-C0AA-4082-94B9-0452B5F8DA7F} = {1CA47F79-16A5-4909-B6E8-1AEFED909F8A}
+		{34D5DADA-573C-4017-B88A-59BB328D47D6} = {1CA47F79-16A5-4909-B6E8-1AEFED909F8A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C19DD71E-2F9D-4C83-8C80-00A74BF466D8}

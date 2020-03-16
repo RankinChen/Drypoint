@@ -7,7 +7,7 @@ using System.Threading;
 using Drypoint.Application.Custom.Demo.Dto;
 using Drypoint.Application.Services;
 using Drypoint.Unity.BaseDto.Output;
-using Drypoint.Core.Authorization.Users;
+using Drypoint.Model.Authorization.Users;
 using Drypoint.EntityFrameworkCore.Repositories;
 using Drypoint.Unity;
 using Microsoft.AspNetCore.Authorization;
