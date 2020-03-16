@@ -21,7 +21,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Drypoint.Core.Auditing.AuditLog", b =>
+            modelBuilder.Entity("Drypoint.Model.Auditing.AuditLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointAuditLogs");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.PermissionSetting", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.PermissionSetting", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +86,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("PermissionSetting");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Roles.Role", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Roles.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,7 +123,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointRole");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.User", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,7 +197,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointUser");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserClaim", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserClaim", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -221,7 +221,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointUserClaims");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserLogin", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserLogin", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,7 +244,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointUserLogins");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserLoginAttempt", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserLoginAttempt", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,7 +275,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointUserLoginAttempts");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserRole", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserRole", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -296,7 +296,7 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointUserRoles");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Configuration.Setting", b =>
+            modelBuilder.Entity("Drypoint.Model.Configuration.Setting", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -326,9 +326,9 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.ToTable("DrypointSettings");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Roles.RolePermissionSetting", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Roles.RolePermissionSetting", b =>
                 {
-                    b.HasBaseType("Drypoint.Core.Authorization.PermissionSetting");
+                    b.HasBaseType("Drypoint.Model.Authorization.PermissionSetting");
 
                     b.Property<long>("RoleId");
 
@@ -339,9 +339,9 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.HasDiscriminator().HasValue("RolePermissionSetting");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserPermissionSetting", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserPermissionSetting", b =>
                 {
-                    b.HasBaseType("Drypoint.Core.Authorization.PermissionSetting");
+                    b.HasBaseType("Drypoint.Model.Authorization.PermissionSetting");
 
                     b.Property<long>("UserId");
 
@@ -352,48 +352,48 @@ namespace Drypoint.EntityFrameworkCore.Migrations
                     b.HasDiscriminator().HasValue("UserPermissionSetting");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserClaim", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserClaim", b =>
                 {
-                    b.HasOne("Drypoint.Core.Authorization.Users.User")
+                    b.HasOne("Drypoint.Model.Authorization.Users.User")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserLogin", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserLogin", b =>
                 {
-                    b.HasOne("Drypoint.Core.Authorization.Users.User")
+                    b.HasOne("Drypoint.Model.Authorization.Users.User")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserRole", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserRole", b =>
                 {
-                    b.HasOne("Drypoint.Core.Authorization.Users.User")
+                    b.HasOne("Drypoint.Model.Authorization.Users.User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Configuration.Setting", b =>
+            modelBuilder.Entity("Drypoint.Model.Configuration.Setting", b =>
                 {
-                    b.HasOne("Drypoint.Core.Authorization.Users.User")
+                    b.HasOne("Drypoint.Model.Authorization.Users.User")
                         .WithMany("Settings")
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Roles.RolePermissionSetting", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Roles.RolePermissionSetting", b =>
                 {
-                    b.HasOne("Drypoint.Core.Authorization.Roles.Role")
+                    b.HasOne("Drypoint.Model.Authorization.Roles.Role")
                         .WithMany("Permissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Drypoint.Core.Authorization.Users.UserPermissionSetting", b =>
+            modelBuilder.Entity("Drypoint.Model.Authorization.Users.UserPermissionSetting", b =>
                 {
-                    b.HasOne("Drypoint.Core.Authorization.Users.User")
+                    b.HasOne("Drypoint.Model.Authorization.Users.User")
                         .WithMany("Permissions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

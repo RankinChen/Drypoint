@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Drypoint.Unity.Runtime.Session
 {
-    public class UserIdentifier : IUserIdentifier, ITransientDependency
+    public class UserIdentifier : IUserIdentifier, IScopedDependency
     {
 
         public long UserId { get; set; }

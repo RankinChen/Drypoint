@@ -1,5 +1,5 @@
-﻿using Drypoint.Core.Authorization.Roles;
-using Drypoint.Core.Authorization.Users;
+﻿using Drypoint.Model.Authorization.Roles;
+using Drypoint.Model.Authorization.Users;
 using Drypoint.EntityFrameworkCore.Repositories;
 using Drypoint.Unity.Dependency;
 using Drypoint.Unity.Extensions.Collections;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Drypoint.Application.Authorization.Permissions
 {
-    public class PermissionChecker : IPermissionChecker, ITransientDependency
+    public class PermissionChecker : IPermissionChecker, IScopedDependency
     {
         private readonly ILogger _logger;
         private readonly IDrypointSession _drypointSession;

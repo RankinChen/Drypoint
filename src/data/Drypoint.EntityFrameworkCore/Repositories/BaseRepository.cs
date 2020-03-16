@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Drypoint.Core.Common;
+using Drypoint.Model.Common;
 
 namespace Drypoint.EntityFrameworkCore.Repositories
 {

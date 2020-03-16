@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Drypoint.Core.Auditing;
-using Drypoint.Core.Authorization;
-using Drypoint.Core.Authorization.Roles;
-using Drypoint.Core.Authorization.Users;
-using Drypoint.Core.Common;
-using Drypoint.Core.Configuration;
+using Drypoint.Model.Auditing;
+using Drypoint.Model.Authorization;
+using Drypoint.Model.Authorization.Roles;
+using Drypoint.Model.Authorization.Users;
+using Drypoint.Model.Common;
+using Drypoint.Model.Configuration;
 using Drypoint.Unity.Expressions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +42,7 @@ namespace Drypoint.EntityFrameworkCore.EntityFrameworkCore
 
         public virtual DbSet<AuditLog> AuditLogs { get; set; }
 
-        
+
         private static MethodInfo ConfigureGlobalFiltersMethodInfo = typeof(DrypointDbContext).GetMethod(nameof(ConfigureGlobalFilters), BindingFlags.Instance | BindingFlags.NonPublic);
         public DrypointDbContext(DbContextOptions<DrypointDbContext> options)
             : base(options)
@@ -107,14 +107,7 @@ namespace Drypoint.EntityFrameworkCore.EntityFrameworkCore
                 var filterExpression = CreateFilterExpression<TEntity>();
                 if (filterExpression != null)
                 {
-                    if (entityType.IsQueryType)
-                    {
-                        modelBuilder.Query<TEntity>().HasQueryFilter(filterExpression);
-                    }
-                    else
-                    {
-                        modelBuilder.Entity<TEntity>().HasQueryFilter(filterExpression);
-                    }
+                    modelBuilder.Entity<TEntity>().HasQueryFilter(filterExpression);
                 }
             }
         }

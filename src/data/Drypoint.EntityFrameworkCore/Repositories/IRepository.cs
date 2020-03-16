@@ -4,13 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Drypoint.Core.Common;
-using Drypoint.Unity;
+using Drypoint.Model.Common;
 using Drypoint.Unity.Dependency;
 
 namespace Drypoint.EntityFrameworkCore.Repositories
 {
-    public interface IRepository<TEntity, TPrimaryKey>: ITransientDependency where TEntity : class, IEntity<TPrimaryKey>
+    public interface IRepository<TEntity, TPrimaryKey>: IScopedDependency where TEntity : class, IEntity<TPrimaryKey>
     {
         int Count();
         int Count(Expression<Func<TEntity, bool>> predicate);

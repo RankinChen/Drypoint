@@ -1,5 +1,5 @@
-﻿using Drypoint.Core.Authorization.Roles;
-using Drypoint.Core.Authorization.Users;
+﻿using Drypoint.Model.Authorization.Roles;
+using Drypoint.Model.Authorization.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Drypoint.Core.Common;
+using Drypoint.Model.Common;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace Drypoint.EntityFrameworkCore.Repositories
