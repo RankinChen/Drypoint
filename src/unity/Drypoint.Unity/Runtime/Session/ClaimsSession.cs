@@ -16,7 +16,7 @@ namespace Drypoint.Unity.Runtime.Session
         protected IPrincipalAccessor PrincipalAccessor { get; }
 
         public ClaimsSession(IPrincipalAccessor principalAccessor)
-           
+
         {
             PrincipalAccessor = principalAccessor;
         }
@@ -29,7 +29,7 @@ namespace Drypoint.Unity.Runtime.Session
 
                 //var userIdClaim = PrincipalAccessor.Principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
                 var userIdClaim = PrincipalAccessor.Principal?.Claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Subject);
-                
+
                 if (string.IsNullOrEmpty(userIdClaim?.Value))
                 {
                     return null;

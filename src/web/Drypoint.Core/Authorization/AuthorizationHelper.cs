@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Drypoint.Core.Authorization
 {
-    public class AuthorizationHelper : IAuthorizationHelper, IScopedDependency
+    public class AuthorizationHelper : IAuthorizationHelper, ITransientDependency
     {
         public IDrypointSession _drypointSession { get; set; }
         public IPermissionChecker _permissionChecker { get; set; }

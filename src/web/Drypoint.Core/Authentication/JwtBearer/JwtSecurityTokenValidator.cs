@@ -1,4 +1,8 @@
-﻿using Drypoint.Unity;
+﻿using Drypoint.EntityFrameworkCore.Repositories;
+using Drypoint.Model.Authorization.Users;
+using Drypoint.Unity;
+using IdentityModel;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -6,13 +10,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Drypoint.Core.Authentication.JwtBearer
 {
     public class JwtSecurityTokenValidator : ISecurityTokenValidator
     {
         private readonly JwtSecurityTokenHandler _tokenHandler;
-
         public JwtSecurityTokenValidator()
         {
             _tokenHandler = new JwtSecurityTokenHandler();
@@ -27,40 +31,44 @@ namespace Drypoint.Core.Authentication.JwtBearer
             return _tokenHandler.CanReadToken(securityToken);
         }
 
+        //验证Token 程序逻辑验证是否失效
         public ClaimsPrincipal ValidateToken(string securityToken, TokenValidationParameters validationParameters,
             out SecurityToken validatedToken)
         {
-            //var cacheManager = IocManager.Instance.Resolve<ICacheManager>();
+            var principal = _tokenHandler.ValidateToken(securityToken, validationParameters, out validatedToken);
 
-            //var principal = _tokenHandler.ValidateToken(securityToken, validationParameters, out validatedToken);
+            return principal;
+            //var tokenValidityKey = principal.Claims.First(c => c.Type == JwtClaimTypes.Id);
 
-            //var userIdentifierString = principal.Claims.First(c => c.Type == DrypointConsts.CacheKey_UserIdentifier);
-            //var tokenValidityKeyInClaims = principal.Claims.First(c => c.Type == DrypointConsts.CacheKey_TokenValidityKey);
+            //var userIdentifierString = await _memoryCache.GetOrCreateAsync<string>(tokenValidityKey, factory =>
+            //  {
+            //      factory.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3); //3秒后释放
+            //    return factory;
+            //  });
 
-            //var tokenValidityKeyInCache = cacheManager
-            //    .GetCache(DrypointConsts.CacheKey_TokenValidityKey)
-            //    .GetOrDefault(tokenValidityKeyInClaims.Value);
+            //_memoryCache.TryGetValue(tokenValidityKey, out object userIdentifierString);
 
-            //if (tokenValidityKeyInCache != null) return principal;
+            //if (userIdentifierString != null)
+            //{
+            //    return principal;
+            //}
 
             //if (long.TryParse(userIdentifierString.Value, out long userIdentifier))
             //{
-            //    var userManagerObject = userManager.Object;
-
-            //    var user = userManagerObject.GetUser(userIdentifier);
-            //    var isValidityKetValid = userManagerObject.IsTokenValidityKeyValidAsync(user, tokenValidityKeyInClaims.Value).Result;
+            //    var isValidityKetValid = true; //验证缓存的Token是否过期
 
             //    if (isValidityKetValid)
             //    {
-            //        cacheManager
-            //            .GetCache(DrypointConsts.CacheKey_TokenValidityKey)
-            //            .Set(tokenValidityKeyInClaims.Value, "");
+            //        _memoryCache.GetOrCreate(DrypointConsts.CacheKey_TokenValidityKey, factory =>
+            //        {
+            //            //过期
+            //            return "";
+            //        }); ;
 
             //        return principal;
             //    }
-
             //}
-            throw new SecurityTokenException("invalid");
+            //throw new SecurityTokenException("invalid");
         }
     }
 }

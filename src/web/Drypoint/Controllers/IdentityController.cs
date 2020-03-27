@@ -1,9 +1,11 @@
 using System.Linq;
+using Drypoint.Unity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Drypoint.Controllers
 {
+    [ApiExplorerSettings(GroupName = DrypointConsts.AdminAPIGroupName)]
     [Route("identity")]
     [Authorize]
     public class IdentityController : ControllerBase

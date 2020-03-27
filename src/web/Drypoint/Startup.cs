@@ -6,12 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Drypoint.Core.Configuration;
 using Microsoft.AspNetCore.Http;
-using IdentityServer4.AccessTokenValidation;
 using CSRedis;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
-using Microsoft.IdentityModel.Logging;
-using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using Drypoint.Core.Authorization;
 using System.Net;
@@ -19,12 +16,15 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Autofac;
+using Drypoint.Core.Authentication;
+using System.Linq;
+using Drypoint.Application.AutoMapper;
 
 namespace Drypoint
 {
     public class Startup
     {
-        private const string LocalCorsPolicyName = "localhost";
+        readonly string LocalCorsPolicyName = "localhost";
         public IConfiguration Configuration { get; }
         private IHostEnvironment Environment { get; }
 
@@ -37,28 +37,33 @@ namespace Drypoint
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //配置选项模式读取配置文件
+            services.AddCustomOptions(Configuration);
+
             services.AddHttpClient();
             //AutoMapper 
+            #region AutoMapper
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<AutoMapperConfig>();
             }, AppDomain.CurrentDomain.GetAssemblies());
+            #endregion
 
-            //DI
-            //services.AddServiceRegister();
-
+            #region CSRedisCache
             //初始化缓存 参考 https://github.com/2881099/csredis
             CSRedisClient csredis = new CSRedisClient(Configuration["RedisConnectionString"]);
             services.AddSingleton(csredis);
             services.AddSingleton<IDistributedCache>(new CSRedisCache(csredis));
+            #endregion
 
-            //MVC
+            #region MVC
             services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
                 //options.Filters.Add(new CorsAuthorizationFilterFactory(LocalCorsPolicyName));
                 options.Filters.Add(typeof(AsyncAuthorizationFilter));  //添加权限过滤器
-            }).AddNewtonsoftJson(options => {
+            }).AddNewtonsoftJson(options =>
+            {
                 //忽略循环引用
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 //不使用驼峰样式的key,按照Model中的属性名进行命名
@@ -67,26 +72,26 @@ namespace Drypoint
 
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            #endregion
 
-            //Configure CORS for APP
+            #region CORS
             services.AddCors(options =>
             {
                 options.AddPolicy(LocalCorsPolicyName, builder =>
                 {
                     builder
-                        //.WithOrigins(
-                        //    Configuration["App:CorsOrigins"]
-                        //        .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                        //        .Select(o => o.RemovePostFix("/"))
-                        //        .ToArray()
-                        //)
-                        //.SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .SetIsOriginAllowed(ori => true)
+                        .WithOrigins(Configuration["App:CorsOrigins"]
+                                    .Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray()
+                        )
+                        //.AllowAnyOrigin();
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        //.SetIsOriginAllowed(ori => true)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowCredentials(); //不要和AllowAnyOrigin同时使用
                 });
             });
+            #endregion
 
             //设置https重定向端口
             services.AddHttpsRedirection(options =>
@@ -95,7 +100,6 @@ namespace Drypoint
                 options.HttpsPort = 443;
             });
 
-            //是否启用HTTP严格传输安全协议(HSTS)
             services.AddHsts(options =>
             {
                 options.Preload = true;
@@ -104,38 +108,11 @@ namespace Drypoint
                 options.ExcludedHosts.Add("example.com");
             });
 
-            //授权相关:资源端代码
-            IdentityModelEventSource.ShowPII = true;
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            //客户端设置 AccessTokenType为JWT(默认)写法
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //        .AddJwtBearer(options =>
-            //         {
-            //             options.Authority = Configuration["IdentityServer:Authority"];
-            //             options.RequireHttpsMetadata = false;
-            //             options.Audience = Configuration["IdentityServer:ApiName"];
-            //         });
-            //客户端设置 AccessTokenType为Reference时需要API提供认证身份认证
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-            //资源端
-            .AddIdentityServerAuthentication(options =>
-            {
-                //options.JwtValidationClockSkew = TimeSpan.Zero;
-                options.Authority = Configuration["IdentityServer:Authority"];
-                options.ApiName = Configuration["IdentityServer:ApiName"];
-                options.ApiSecret = Configuration["IdentityServer:ApiSecret"];
-                options.RequireHttpsMetadata = false;
-                options.JwtValidationClockSkew = TimeSpan.FromSeconds(0);  //验证token间隔时间
-                //待测试
-                //options.JwtBearerEvents = new JwtBearerEvents
-                //{
-                //    OnMessageReceived = QueryStringTokenResolver
-                //};
-            });
+            //扩展方法 注册IdentityServer或者JWT认证
+            AuthConfigurer.Configure(services, Configuration);
 
             //添加自定义API文档生成(支持文档配置)
             services.AddCustomSwaggerGen(Configuration);
-
         }
 
         /// <summary>
@@ -171,15 +148,17 @@ namespace Drypoint
                             await context.Response.WriteAsync(err).ConfigureAwait(false);
                         }
                     });
-                });// this will add the global exception handle for production evironment.
+                });
                 app.UseHsts();
             }
 
-            app.UseCors(LocalCorsPolicyName); //Enable CORS!
+            //CORS
+            app.UseCors(LocalCorsPolicyName);
 
             //开启HTTPS重定向
             app.UseHttpsRedirection();
 
+            //访问静态文件
             app.UseStaticFiles();
             //压缩 由于UseStaticFiles在之前 故不压缩静态文件
             //app.UseResponseCompression();

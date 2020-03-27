@@ -13,6 +13,7 @@ using System;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Autofac;
+using Drypoint.Application.AutoMapper;
 
 namespace Drypoint.SSO
 {
