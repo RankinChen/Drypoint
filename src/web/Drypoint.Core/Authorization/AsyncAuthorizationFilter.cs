@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Drypoint.Core.Authorization
 {
-    public class AsyncAuthorizationFilter : IAsyncAuthorizationFilter, IScopedDependency
+    public class AsyncAuthorizationFilter : IAsyncAuthorizationFilter, ITransientDependency
     {
         private readonly ILogger _logger;
 

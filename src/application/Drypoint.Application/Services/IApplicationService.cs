@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Drypoint.Application.Services
 {
-    public interface IApplicationService : IScopedDependency
+    public interface IApplicationService : ITransientDependency
     {
 
     }

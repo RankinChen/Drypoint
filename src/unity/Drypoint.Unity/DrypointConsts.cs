@@ -36,11 +36,12 @@ namespace Drypoint.Unity
 
         public const string AppAPIGroupName = "app";
 
-        public const string DefaultPassPhrase = "gsKxGZ012HLL3MI5";
+        /// <summary>
+        ///     Default pass phrase for SimpleStringCipher decrypt/encrypt operations
+        /// </summary>
+        public const string DefaultPassPhrase = "(*^▽^*)"; 
 
         public const string CacheKey_TokenValidityKey = "token_validity_key";
-
-        public static string CacheKey_UserIdentifier = "user_identifier";
     }
 
     /// <summary>

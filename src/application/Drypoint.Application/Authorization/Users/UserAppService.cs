@@ -22,8 +22,6 @@ using Drypoint.Unity.Extensions.Collections;
 
 namespace Drypoint.Application.Authorization.Users
 {
-    //[ApiExplorerSettings(GroupName = DrypointConsts.AdminAPIGroupName)]
-    [Route(DrypointConsts.ApiPrefix + "User")]
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -237,7 +235,7 @@ namespace Drypoint.Application.Authorization.Users
                         join rp in _rolePermissionRepository.GetAll()
                             on new { ur.RoleId, RoleName = input.Permission } equals new { rp.RoleId, RoleName = rp.Name }
                             into rpJoined
-                            from rp in rpJoined.DefaultIfEmpty()
+                        from rp in rpJoined.DefaultIfEmpty()
                         where up != null && up.IsGranted || up == null && rp != null
                         group user by user
                         into userGrouped

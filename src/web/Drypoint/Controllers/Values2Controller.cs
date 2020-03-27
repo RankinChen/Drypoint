@@ -16,8 +16,12 @@ namespace Drypoint.Controllers
     {
         public readonly IDemoAppService _demoAppService;
 
-        public Values2Controller(IDemoAppService demoAppService)
+        public Values2Controller(IDemoAppService demoAppService, IServiceProvider serviceProvider)
         {
+            var dd = (IDemoAppService)serviceProvider.GetService(typeof(IDemoAppService));
+
+            var ccc = dd.GetAll();
+
             _demoAppService = demoAppService;
         }
 

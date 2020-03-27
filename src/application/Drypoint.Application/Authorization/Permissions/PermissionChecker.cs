@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Drypoint.Application.Authorization.Permissions
 {
-    public class PermissionChecker : IPermissionChecker, IScopedDependency
+    public class PermissionChecker : IPermissionChecker, ITransientDependency
     {
         private readonly ILogger _logger;
         private readonly IDrypointSession _drypointSession;
